@@ -1,15 +1,44 @@
-import { Router } from "express";
-var router = Router();
+const express = require("express");
+const { db } = require("../firebase");
+const router = express.Router();
 
-router.get("/api", (req, res) => {
-  res.setHeader("Content-Type", "text/html");
-  res.setHeader("Cache-Control", "s-max-age=1, stale-while-revalidate");
-  res.end(`Hello!`);
+router.get("/", async (req, res, next) => {
+  try {
+    const snapshot = await db.collection("zelux").get();
+    const documentsData = snapshot.docs.map((doc) => ({
+      _id: doc.id,
+      data: doc.data(),
+    }));
+
+    res.json(documentsData);
+  } catch (error) {
+    res.json({ error });
+  }
 });
 
-router.get("/api/item/:slug", (req, res) => {
-  const { slug } = req.params;
-  res.end(`Item: ${slug}`);
+router.post("/new", async (req, res, next) => {
+  try {
+    const body = req.body;
+    const dbRes = await db.collection("zelux").add(body);
+
+    res.json(dbRes);
+  } catch (error) {
+    console.log(error);
+    res.json({ error });
+  }
 });
 
-export default router;
+router.delete("/remove", async (req, res, next) => {
+  try {
+    const { key } = req.body;
+    const dbRes = await db.collection("zelux").doc(key).delete();
+    console.log(dbRes);
+
+    res.json(dbRes);
+  } catch (error) {
+    console.log(error);
+    res.json({ error });
+  }
+});
+
+module.exports = router;
