@@ -1,6 +1,6 @@
-const express = require("express");
-const { db } = require("../firebase");
-const router = express.Router();
+import { Router } from "express";
+import db from "../firebase.js";
+const router = Router();
 
 router.get("/", async (req, res, next) => {
   try {
