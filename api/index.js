@@ -1,5 +1,5 @@
 import { Router } from "express";
-import db from "../firebase.js";
+import db from "../src/firebase.js";
 const router = Router();
 
 router.get("/", async (req, res, next) => {
