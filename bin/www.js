@@ -4,9 +4,10 @@
  * Module dependencies.
  */
 
-var app = require("../src/app");
-var debug = require("debug")("zelux-backend:server");
-var http = require("http");
+import app from "../src/app.js";
+import debug from "debug";
+debug.debug("zelux-backend:server");
+import { createServer } from "http";
 
 /**
  * Get port from environment and store in Express.
@@ -19,7 +20,7 @@ app.set("port", port);
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+var server = createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.

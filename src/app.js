@@ -1,25 +1,30 @@
-var createError = require("http-errors");
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
+import createError from "http-errors";
+import express, { json, urlencoded } from "express";
+import { join } from "path";
+import cookieParser from "cookie-parser";
+import logger from "morgan";
+import path from "path";
+import { fileURLToPath } from "url";
+import router from "./routes/index.js";
 
-var indexRouter = require("./routes/index");
+const __filename = fileURLToPath(import.meta.url);
+
+const __dirname = path.dirname(__filename);
 
 var app = express();
 
 app.use(logger("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(json());
+app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(join(__dirname, "public")));
 
 // Import the functions you need from the SDKs you need
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // routes
-app.use("/", indexRouter);
+app.use("/", router);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -37,4 +42,4 @@ app.use(function (err, req, res, next) {
   res.json({ error: err });
 });
 
-module.exports = app;
+export default app;
