@@ -6,7 +6,7 @@ router.get("/", async (req, res, next) => {
   try {
     const snapshot = await db.collection("zelux").get();
     const documentsData = snapshot.docs.map((doc) => ({
-      _id: doc.id,
+      id: doc.id,
       data: doc.data(),
     }));
 

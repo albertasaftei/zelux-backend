@@ -6,6 +6,7 @@ import logger from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
 import router from "./routes/index.js";
+import cors from "cors";
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -15,6 +16,7 @@ var app = express();
 
 app.use(logger("dev"));
 app.use(json());
+app.use(cors());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
