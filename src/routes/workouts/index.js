@@ -22,10 +22,10 @@ router.post(
         [userId]
       );
 
-      res.json({ rows: result.rowCount });
+      res.json(result.rows);
     } catch (err) {
       console.error(err);
-      res.status(500).send("Internal Server Error");
+      res.status(500).send("There was an error fetching workouts");
     }
   }
 );
