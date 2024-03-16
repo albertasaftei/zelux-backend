@@ -1,5 +1,4 @@
-import { initializeApp, cert, getApps } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
+import { initializeApp, cert, getApps, getApp } from "firebase-admin/app";
 import serviceAccount from "./credentials.json" assert { type: "json" };
 
 // Initialize Firebase
