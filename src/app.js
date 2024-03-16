@@ -5,8 +5,10 @@ import cookieParser from "cookie-parser";
 import logger from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
-import router from "./routes/index.js";
+import workoutsRouter from "./routes/workouts/index.js";
+import usersRouter from "./routes/users/index.js";
 import cors from "cors";
+import dotenv from "dotenv";
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -14,6 +16,7 @@ const __dirname = path.dirname(__filename);
 
 var app = express();
 
+dotenv.config();
 app.use(logger("dev"));
 app.use(json());
 app.use(cors());
@@ -26,7 +29,8 @@ app.use(express.static(join(__dirname, "public")));
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // routes
-app.use("/", router);
+app.use("/workouts", workoutsRouter);
+app.use("/users", usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
