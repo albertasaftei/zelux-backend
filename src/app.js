@@ -9,6 +9,7 @@ import workoutsRouter from "./routes/workouts/index.js";
 import usersRouter from "./routes/users/index.js";
 import cors from "cors";
 import dotenv from "dotenv";
+import { firebaseAdminApp } from "./firebase.js";
 
 const __filename = fileURLToPath(import.meta.url);
 
