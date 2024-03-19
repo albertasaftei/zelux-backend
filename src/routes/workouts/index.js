@@ -34,6 +34,7 @@ const newSchema = Joi.object({
   userId: Joi.string().required(),
   title: Joi.string().required(),
   exercises: Joi.array().required(),
+  category: Joi.array().required(),
 });
 
 router.post(
@@ -42,11 +43,12 @@ router.post(
   [authenticationMiddleware],
   async (req, res) => {
     try {
-      const { userId, title, exercises } = req.body;
+      const { userId, title, exercises, category } = req.body;
+      const parsedCategories = JSON.stringify(category);
       const parsedExercises = JSON.stringify(exercises);
       await pool.query(
-        `INSERT INTO workouts ("fk_userId", "title", "exercises") VALUES ($1, $2, $3)`,
-        [userId, title, parsedExercises]
+        `INSERT INTO workouts ("fk_userId", "title", "exercises", "category") VALUES ($1, $2, $3, $4)`,
+        [userId, title, parsedExercises, parsedCategories]
       );
       res.json({
         message: `Workout created successfully for user ${userId}`,
@@ -80,5 +82,15 @@ router.delete(
     }
   }
 );
+
+router.get("/categories", [authenticationMiddleware], async (req, res) => {
+  try {
+    const result = await pool.query(`SELECT * FROM categories`);
+    return res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("There was an error fetching workout categories");
+  }
+});
 
 export default router;
