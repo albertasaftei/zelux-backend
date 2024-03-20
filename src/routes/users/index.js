@@ -18,7 +18,6 @@ router.post(
   async (req, res) => {
     try {
       const { userId, accessToken } = req.body;
-      console.log({ userId, accessToken });
       const decoded = jwtDecode(accessToken);
       if (Date.now() >= decoded?.exp * 1000) {
         return res.status(500).send("Access token expired!");
