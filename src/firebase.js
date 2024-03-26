@@ -14,6 +14,8 @@ const credentials = {
   universe_domain: "googleapis.com",
 };
 
+console.log("credentials", credentials);
+
 // Initialize Firebase
 export const firebaseAdminApp = initializeApp({
   credential: cert(credentials),
