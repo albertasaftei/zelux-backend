@@ -32,7 +32,6 @@ router.delete("/remove", async (req, res, next) => {
   try {
     const { key } = req.body;
     const dbRes = await db.collection("zelux").doc(key).delete();
-    console.log(dbRes);
 
     res.json(dbRes);
   } catch (error) {
