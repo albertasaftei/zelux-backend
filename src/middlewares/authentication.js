@@ -10,9 +10,6 @@ const appCheckVerification = async (req, res, next) => {
 
   try {
     const decoded = await getAppCheck().verifyToken(appCheckToken);
-    console.log({ decoded });
-    // If verifyToken() succeeds, continue with the next middleware
-    // function in the stack.
     return next();
   } catch (err) {
     res.status(401);

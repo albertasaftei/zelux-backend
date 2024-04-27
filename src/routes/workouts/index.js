@@ -93,4 +93,44 @@ router.get("/categories", [authenticationMiddleware], async (req, res) => {
   }
 });
 
+const registerWorkoutSchema = Joi.object({
+  userId: Joi.string().required(),
+  exercises: Joi.array().required(),
+  category: Joi.array().required(),
+  startedAt: Joi.date().required(),
+  finishedAt: Joi.date().required(),
+});
+
+router.post(
+  "/registerWorkout",
+  validate(registerWorkoutSchema),
+  [authenticationMiddleware],
+  async (req, res) => {
+    try {
+      const { userId, exercises, category, startedAt, finishedAt } = req.body;
+      const parsedCategories = JSON.stringify(category);
+      const parsedExercises = JSON.stringify(exercises);
+
+      console.log({
+        userId,
+        startedAt,
+        finishedAt,
+        parsedCategories,
+        parsedExercises,
+      });
+
+      await pool.query(
+        `INSERT INTO finished_workouts ("exercises", "categories", "started_at", "finished_at", "fk_userId") VALUES ($1, $2, $3, $4, $5)`,
+        [parsedExercises, parsedCategories, startedAt, finishedAt, userId]
+      );
+      res.json({
+        message: `Workout successfully registered for user ${userId}`,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send("There was an error registering workout");
+    }
+  }
+);
+
 export default router;
