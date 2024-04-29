@@ -53,7 +53,8 @@ router.post(
 
       if (!result.rows.length) {
         const result = await pool.query(
-          `INSERT INTO users () VALUES ($1, $2, $3, $4)`
+          `INSERT INTO users ("uid", "nickname", "age", "email") VALUES ($1, $2, $3, $4)`,
+          [userId, decoded?.name, 0, decoded?.email]
         );
 
         return res.json({ ...result?.rows[0], finishedSessions: [] });
