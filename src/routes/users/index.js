@@ -3,8 +3,8 @@ import validate from "../../middlewares/validate.js";
 import Joi from "joi";
 import authenticationMiddleware from "../../middlewares/authentication.js";
 import { pool } from "../../../db.js";
+import "core-js/stable/atob.js";
 import { jwtDecode } from "jwt-decode";
-import { format, parseISO } from "date-fns";
 
 const router = Router();
 
