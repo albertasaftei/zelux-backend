@@ -26,9 +26,7 @@ router.post(
     try {
       const { userId, accessToken } = req.body;
       const decoded = jwtDecode(accessToken);
-      if (Date.now() >= decoded?.exp * 1000) {
-        return res.status(500).send("Access token expired!");
-      }
+
       const result = await pool.query(`SELECT * FROM users WHERE "uid" = $1`, [
         userId,
       ]);
@@ -52,12 +50,18 @@ router.post(
       }, []);
 
       if (!result.rows.length) {
-        const result = await pool.query(
+        console.log("User not found, creating new user");
+        await pool.query(
           `INSERT INTO users ("uid", "nickname", "age", "email") VALUES ($1, $2, $3, $4)`,
           [userId, decoded?.name, 0, decoded?.email]
         );
 
-        return res.json({ ...result?.rows[0], finishedSessions: [] });
+        const newUser = await pool.query(
+          `SELECT * FROM users WHERE "uid" = $1`,
+          [userId]
+        );
+
+        return res.json({ ...newUser?.rows[0], finishedSessions: [] });
       }
       res.json({ ...result?.rows[0], finishedSessions: reducedWorkouts });
     } catch (err) {
